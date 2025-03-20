@@ -1,81 +1,288 @@
-### **Esercizio: Gioco del 15**  
-**Obiettivo:**  
-Creare un programma in Java che implementi il **Gioco del 15**, un puzzle numerico con una griglia **4x4** dove i numeri da **1 a 15** devono essere ordinati, muovendo le tessere in uno spazio vuoto.  
+## Lezione: Gestione dei File di Testo in Java con Forza 4
 
----
+### Introduzione + Esercizio Finale (scrorrere in fondo il documento)
 
-### **Requisiti**
-1. **Inizializzare una matrice 4x4** con i numeri da 1 a 15 e uno spazio vuoto `0`.
-2. **Mescolare la matrice** in modo casuale all'inizio della partita.
-3. **Consentire al giocatore di spostare le tessere** inserendo comandi (`W`, `A`, `S`, `D` per su, sinistra, giù, destra).
-4. **Gestire le eccezioni**:
-   - Se il giocatore inserisce un comando non valido, lanciare un'eccezione `IllegalArgumentException`.
-   - Se il giocatore tenta una mossa impossibile (es. muovere una tessera oltre i bordi), lanciare un'eccezione personalizzata `MossaNonValidaException`.
-5. **Controllare la vittoria**: il giocatore vince quando i numeri sono ordinati correttamente.
+Questa lezione ti guiderà attraverso i concetti fondamentali della gestione dei file di testo in Java, usando il popolare gioco Forza 4 come esempio pratico. Imparerai come salvare lo stato di una partita in un file di testo e come caricare una partita precedentemente salvata per riprenderla in seguito.
 
----
+### Concetti Fondamentali
 
-### **Punti Extra**
-- Aggiungere un contatore per il numero di mosse.
-- Implementare un sistema per annullare l'ultima mossa.
+* **File di Testo:** I file di testo sono file che contengono dati in formato leggibile dall'uomo, come caratteri, numeri e simboli. In Java, possiamo usare la classe `java.io.File` per rappresentare i file e le classi `java.io.FileReader` e `java.io.FileWriter` per leggere e scrivere dati da/verso file di testo.
 
-### **DA SAPERE**
-- Completare il codice del file GiocoDelQuindici.
+* **Salvataggio:** Salvare lo stato di una partita in un file di testo implica scrivere i dati della partita in un file, in un formato che può essere letto in seguito.
 
-Ecco la soluzione del **Gioco del 15** in Java, con l'utilizzo di una **matrice bidimensionale**, gestione delle **eccezioni** e verifica della vittoria.  
+* **Caricamento:** Caricare una partita salvata significa leggere i dati della partita da un file di testo e ripristinare lo stato del gioco.
 
----
+### Esempio: Forza 4
 
-### **Caratteristiche della soluzione:**
-- **Matrice 4x4** con numeri da `1` a `15` e un `0` che rappresenta lo spazio vuoto.  
-- **Mescolamento iniziale** per generare una disposizione casuale.  
-- **Movimenti con input (`W`, `A`, `S`, `D`)** per spostare le tessere.  
-- **Gestione delle eccezioni**:
-  - `IllegalArgumentException` se l'input è errato.  
-  - `MossaNonValidaException` se la mossa non è consentita.  
-- **Verifica della vittoria**, controllando se i numeri sono ordinati correttamente.  
+Il gioco Forza 4 è un gioco da tavolo in cui due giocatori si alternano a far cadere delle pedine in una griglia verticale. Il primo giocatore che riesce ad allineare quattro pedine dello stesso colore in orizzontale, verticale o in diagonale vince.
 
----
-### **Come Funziona**
-1. Il gioco crea una **griglia 4x4** con numeri da **1 a 15** e uno spazio vuoto `0`.  
-2. La griglia viene **mescolata** in modo casuale.  
-3. L'utente può muovere una tessera adiacente allo **spazio vuoto** usando i comandi:  
-   - `W` (Su)  
-   - `A` (Sinistra)  
-   - `S` (Giù)  
-   - `D` (Destra)  
-   - `Q` (per uscire dal gioco)  
-4. Se l'utente inserisce un comando non valido (`X`, `Z`, ecc.), viene lanciata una **IllegalArgumentException**.  
-5. Se l'utente tenta di fare una **mossa non valida** (es. muoversi oltre i bordi), viene lanciata una **MossaNonValidaException**.  
-6. Il gioco termina quando l'utente **ordina correttamente i numeri da 1 a 15**.  
+#### Salvataggio della Partita
 
----
+Per salvare lo stato di una partita di Forza 4, dobbiamo salvare la configurazione della griglia e il giocatore corrente. Questo può essere fatto scrivendo i dati della griglia in un file di testo, separando le righe con un carattere speciale, come il newline (`\n`).
 
-### **Esempio di Output**
+Ecco un esempio di come potrebbe apparire un file di salvataggio per una partita di Forza 4:
+
 ```
-=== Gioco del 15 ===
- 1  2  3  4 
- 5  6  7  8 
- 9 10 11 12 
-13 14 15   
-
-Inserisci la mossa (W = su, S = giù, A = sinistra, D = destra, Q = esci):  
-A  
-Errore: Mossa non valida! Non puoi uscire dai limiti.  
-
-S  
- 1  2  3  4  
- 5  6  7  8  
- 9 10 11   
-13 14 15 12  
+. . . . . . .
+. . . . . . .
+. . . . . . .
+. . . . . . .
+. . . . . . .
+X O X O . . .
+X
 ```
 
----
+* La prima parte del file rappresenta la griglia di gioco, con ogni riga rappresentata da una riga nel file.
+* Il punto "." rappresenta una cella vuota, mentre "X" e "O" rappresentano le pedine dei due giocatori.
+* La riga finale indica il giocatore corrente ("X" in questo caso).
 
-### **Varianti ed Estensioni**
-- Implementare un **sistema per annullare l'ultima mossa**.  
-- Aggiungere un **contatore di mosse**.  
-- **Migliorare la mescolatura** garantendo che il puzzle sia sempre risolvibile.  
+#### Caricamento della Partita
 
- 
+Per caricare una partita salvata, dobbiamo leggere i dati dal file di testo e ripristinare lo stato del gioco. Questo implica leggere la griglia dal file e impostare il giocatore corrente in base ai dati letti.
+
+### Metodi di Lettura e Scrittura
+
+Per gestire la lettura e la scrittura dei file di testo, possiamo creare due metodi:
+
+1. **`salvaPartita(String nomeFile)`:** Questo metodo salva lo stato della partita corrente nel file specificato dal parametro `nomeFile`.
+
+2. **`caricaPartita(String nomeFile)`:** Questo metodo carica lo stato della partita dal file specificato dal parametro `nomeFile`.
+
+#### Esempio di Codice
+
+```java
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Random;
+
+public class ForzaQuattro {
+
+    // Dimensione della griglia
+    private static final int RIGHE = 6;
+    private static final int COLONNE = 7;
+
+    // Simboli dei giocatori
+    private static final char GIOCATORE_1 = 'X';
+    private static final char GIOCATORE_2 = 'O';
+
+    // Griglia di gioco
+    private static char[][] griglia;
+
+    // Giocatore corrente
+    private static char giocatoreCorrente;
+
+    public static void main(String[] args) {
+        // Inizializza il generatore di numeri casuali
+        Random random = new Random();
+
+        // Gioca 10 partite
+        for (int partita = 1; partita <= 10; partita++) {
+            System.out.println("\nPartita " + partita + ":");
+
+            // Inizializza la griglia
+            inizializzaGriglia();
+
+            // Giocatore corrente
+            giocatoreCorrente = GIOCATORE_1;
+
+            // Gioco in corso
+            boolean giocoInCorso = true;
+
+            // Ciclo principale del gioco
+            while (giocoInCorso) {
+                // Ottiene l'input del giocatore (generato in modo casuale)
+                int colonna = random.nextInt(COLONNE);
+
+                // Inserisce la pedina nella griglia
+                if (inserisciPedina(colonna, giocatoreCorrente)) {
+                    // Controlla se il giocatore ha vinto
+                    if (verificaVittoria(giocatoreCorrente)) {
+                        // Stampa la griglia finale
+                        stampaGriglia();
+                        System.out.println("Il giocatore " + giocatoreCorrente + " ha vinto!");
+                        giocoInCorso = false;
+                    } else {
+                        // Controlla se la griglia è piena
+                        if (grigliaPiena()) {
+                            // Stampa la griglia finale
+                            stampaGriglia();
+                            System.out.println("Pareggio!");
+                            giocoInCorso = false;
+                        } else {
+                            // Cambia il giocatore corrente
+                            giocatoreCorrente = (giocatoreCorrente == GIOCATORE_1) ? GIOCATORE_2 : GIOCATORE_1;
+                        }
+                    }
+                } else {
+                    // Se la colonna è piena, riprova con un'altra colonna
+                }
+            }
+
+            // Salva la partita dopo ogni partita
+            salvaPartita("partita_" + partita + ".txt");
+        }
+    }
+
+    // Inizializza la griglia di gioco
+    private static void inizializzaGriglia() {
+        griglia = new char[RIGHE][COLONNE];
+        for (int i = 0; i < RIGHE; i++) {
+            for (int j = 0; j < COLONNE; j++) {
+                griglia[i][j] = '.';
+            }
+        }
+    }
+
+    // Stampa la griglia di gioco
+    private static void stampaGriglia() {
+        for (int i = 0; i < RIGHE; i++) {
+            for (int j = 0; j < COLONNE; j++) {
+                System.out.print(griglia[i][j] + " ");
+            }
+            System.out.println();
+        }
+        // Stampa i numeri delle colonne
+        for (int i = 0; i < COLONNE; i++) {
+            System.out.print(i + " ");
+        }
+        System.out.println();
+    }
+
+    // Inserisce una pedina nella griglia
+    private static boolean inserisciPedina(int colonna, char simbolo) {
+        // Controlla se la colonna è valida
+        if (colonna < 0 || colonna >= COLONNE) {
+            return false;
+        }
+
+        // Trova la posizione più bassa disponibile nella colonna
+        for (int i = RIGHE - 1; i >= 0; i--) {
+            if (griglia[i][colonna] == '.') {
+                griglia[i][colonna] = simbolo;
+                return true;
+            }
+        }
+
+        // Colonna piena
+        return false;
+    }
+
+    // Verifica se il giocatore corrente ha vinto
+    private static boolean verificaVittoria(char simbolo) {
+        // Controlla le righe
+        for (int i = 0; i < RIGHE; i++) {
+            for (int j = 0; j <= COLONNE - 4; j++) {
+                if (griglia[i][j] == simbolo && griglia[i][j + 1] == simbolo &&
+                        griglia[i][j + 2] == simbolo && griglia[i][j + 3] == simbolo) {
+                    return true;
+                }
+            }
+        }
+
+        // Controlla le colonne
+        for (int i = 0; i <= RIGHE - 4; i++) {
+            for (int j = 0; j < COLONNE; j++) {
+                if (griglia[i][j] == simbolo && griglia[i + 1][j] == simbolo &&
+                        griglia[i + 2][j] == simbolo && griglia[i + 3][j] == simbolo) {
+                    return true;
+                }
+            }
+        }
+
+        // Controlla le diagonali \
+        for (int i = 0; i <= RIGHE - 4; i++) {
+            for (int j = 0; j <= COLONNE - 4; j++) {
+                if (griglia[i][j] == simbolo && griglia[i + 1][j + 1] == simbolo &&
+                        griglia[i + 2][j + 2] == simbolo && griglia[i + 3][j + 3] == simbolo) {
+                    return true;
+                }
+            }
+        }
+
+        // Controlla le diagonali /
+        for (int i = 0; i <= RIGHE - 4; i++) {
+            for (int j = 3; j < COLONNE; j++) {
+                if (griglia[i][j] == simbolo && griglia[i + 1][j - 1] == simbolo &&
+                        griglia[i + 2][j - 2] == simbolo && griglia[i + 3][j - 3] == simbolo) {
+                    return true;
+                }
+            }
+        }
+
+        // Nessuna vittoria
+        return false;
+    }
+
+    // Controlla se la griglia è piena
+    private static boolean grigliaPiena() {
+        for (int j = 0; j < COLONNE; j++) {
+            if (griglia[0][j] == '.') {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // Salva lo stato della partita in un file di testo
+    private static void salvaPartita(String nomeFile) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(nomeFile))) {
+            // Scrive la griglia nel file
+            for (int i = 0; i < RIGHE; i++) {
+                for (int j = 0; j < COLONNE; j++) {
+                    writer.write(griglia[i][j]);
+                }
+                writer.newLine();
+            }
+
+            // Scrive il giocatore corrente nel file
+            writer.write(giocatoreCorrente);
+        } catch (IOException e) {
+            System.err.println("Errore durante il salvataggio della partita: " + e.getMessage());
+        }
+    }
+
+    // Carica lo stato della partita da un file di testo
+    private static void caricaPartita(String nomeFile) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(nomeFile))) {
+            // Legge la griglia dal file
+            for (int i = 0; i < RIGHE; i++) {
+                String riga = reader.readLine();
+                for (int j = 0; j < COLONNE; j++) {
+                    griglia[i][j] = riga.charAt(j);
+                }
+            }
+
+            // Legge il giocatore corrente dal file
+            giocatoreCorrente = reader.readLine().charAt(0);
+        } catch (IOException e) {
+            System.err.println("Errore durante il caricamento della partita: " + e.getMessage());
+        }
+    }
+}
+```
+
+### Conclusione
+
+Questa lezione ti ha introdotto ai concetti fondamentali della gestione dei file di testo in Java, usando il gioco Forza 4 come esempio pratico. Hai imparato come salvare lo stato di una partita in un file di testo e come caricare una partita precedentemente salvata.
+
+### Esercizio da svolgere
+
+1. Modifica il codice per consentire di giocare tra due umani, tra un umano e il pc oppure totalmente automatico (come adesso).
+2. Modifica il codice per creare un menù che consenta di caricare la partita precedentemente salvata e che consenta di salvare la partita allo stato attuale, ivi compreso l'ultimo giocatore che ha fatto la mossa.
+3. Modifica il codice presente per permettere all'utente di scegliere il nome del file di salvataggio.
+4. Aggiungi la funzionalità per caricare una partita all'inizio del gioco, creando un menù di scelta iniziale: nuova partita (pc vs pc, umano vs pc, umano vs umano) , carica partita esistente, esci dal gioco.
+5. Integra la possibilità di poter salvare la partita in qualsiasi momento,  solo per le partite tra umano e pc o tra umano e umano.
+6. Implementa una funzione per visualizzare la storia delle partite giocate, leggendo i file di salvataggio.
+
+### Suggerimenti
+
+* Utilizza la classe `java.io.File` per controllare l'esistenza di un file prima di provare a leggerlo o scriverlo.
+* Utilizza un blocco `try-with-resources` per gestire automaticamente la chiusura dei file.
+* Scegli un formato di file chiaro e leggibile per semplificare la lettura e la scrittura dei dati.
+
+Puoi approfondire ulteriormente la gestione dei file di testo in Java esplorando le diverse classi e metodi disponibili nella libreria Java.  
+
 Buon lavoro! 🎲
